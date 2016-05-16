@@ -13,7 +13,7 @@
 
    #include <stddef.h>
 
-#if XMP_MacBuild | XMP_iOSBuild	// ! No stdint.h on Windows and some UNIXes.
+#if XMP_MacBuild | XMP_iOSBuild	 | XMP_WinBuild // ! No stdint.h on Windows and some UNIXes.
     #include <stdint.h>
 #endif
 #if XMP_UNIXBuild		// hopefully an inttypes.h on all UNIXes...
@@ -38,7 +38,7 @@ extern "C" {
 // case only the declarations of the XMP_... types needs to change, not all of the uses. These
 // types are used where fixed sizes are required in order to have a known ABI for a DLL build.
 
-#if XMP_MacBuild || XMP_iOSBuild || defined(HAVE_STDINT_H)
+#if XMP_MacBuild || XMP_iOSBuild || XMP_WinBuild | defined(HAVE_STDINT_H)
 
     typedef int8_t   XMP_Int8;
     typedef int16_t  XMP_Int16;

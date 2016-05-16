@@ -37,6 +37,7 @@
 /** @brief this file implement the glue for XMP API
  */
 
+
 #include "xmpconsts.h"
 #include "xmp.h"
 #include "xmperrors.h"
@@ -50,6 +51,7 @@
 #include "XMP.hpp"
 #include "XMP.incl_cpp"
 #include "XMPUtils.hpp"
+
 
 #if HAVE_NATIVE_TLS
 
@@ -174,7 +176,8 @@ const char NS_PDF[] = kXMP_NS_PDF;
         return r;                                                              \
     }
 
-int xmp_get_error()
+
+int __callconv xmp_get_error()
 {
 #if HAVE_NATIVE_TLS
     return g_error;
@@ -183,7 +186,7 @@ int xmp_get_error()
 #endif
 }
 
-bool xmp_init()
+bool __callconv xmp_init()
 {
     RESET_ERROR;
     try {
@@ -200,15 +203,15 @@ bool xmp_init()
     return false;
 }
 
-void xmp_terminate()
+void __callconv xmp_terminate()
 {
     RESET_ERROR;
     SXMPFiles::Terminate();
 }
 
-bool xmp_register_namespace(const char *namespaceURI,
-                            const char *suggestedPrefix,
-                            XmpStringPtr registeredPrefix)
+bool __callconv xmp_register_namespace(const char *namespaceURI,
+								      const char *suggestedPrefix,
+									  XmpStringPtr registeredPrefix)
 {
     RESET_ERROR;
     try {
@@ -221,7 +224,7 @@ bool xmp_register_namespace(const char *namespaceURI,
     return false;
 }
 
-bool xmp_namespace_prefix(const char *ns, XmpStringPtr prefix)
+bool __callconv xmp_namespace_prefix(const char *ns, XmpStringPtr prefix)
 {
     CHECK_PTR(ns, false);
     RESET_ERROR;
@@ -234,7 +237,7 @@ bool xmp_namespace_prefix(const char *ns, XmpStringPtr prefix)
     return false;
 }
 
-bool xmp_prefix_namespace_uri(const char *prefix, XmpStringPtr ns)
+bool __callconv xmp_prefix_namespace_uri(const char *prefix, XmpStringPtr ns)
 {
     CHECK_PTR(prefix, false);
     RESET_ERROR;
@@ -247,7 +250,7 @@ bool xmp_prefix_namespace_uri(const char *prefix, XmpStringPtr ns)
     return false;
 }
 
-XmpFilePtr xmp_files_new()
+XmpFilePtr __callconv xmp_files_new()
 {
     RESET_ERROR;
 
@@ -262,7 +265,7 @@ XmpFilePtr xmp_files_new()
     return nullptr;
 }
 
-XmpFilePtr xmp_files_open_new(const char *path, XmpOpenFileOptions options)
+XmpFilePtr __callconv xmp_files_open_new(const char *path, XmpOpenFileOptions options)
 {
     CHECK_PTR(path, nullptr);
     RESET_ERROR;
@@ -281,7 +284,7 @@ XmpFilePtr xmp_files_open_new(const char *path, XmpOpenFileOptions options)
     return nullptr;
 }
 
-bool xmp_files_open(XmpFilePtr xf, const char *path, XmpOpenFileOptions options)
+bool __callconv xmp_files_open(XmpFilePtr xf, const char *path, XmpOpenFileOptions options)
 {
     CHECK_PTR(xf, false);
     RESET_ERROR;
@@ -295,7 +298,7 @@ bool xmp_files_open(XmpFilePtr xf, const char *path, XmpOpenFileOptions options)
     return false;
 }
 
-bool xmp_files_close(XmpFilePtr xf, XmpCloseFileOptions options)
+bool __callconv xmp_files_close(XmpFilePtr xf, XmpCloseFileOptions options)
 {
     CHECK_PTR(xf, false);
     RESET_ERROR;
@@ -310,7 +313,7 @@ bool xmp_files_close(XmpFilePtr xf, XmpCloseFileOptions options)
     return true;
 }
 
-XmpPtr xmp_files_get_new_xmp(XmpFilePtr xf)
+XmpPtr __callconv xmp_files_get_new_xmp(XmpFilePtr xf)
 {
     CHECK_PTR(xf, nullptr);
     RESET_ERROR;
@@ -330,7 +333,7 @@ XmpPtr xmp_files_get_new_xmp(XmpFilePtr xf)
     return nullptr;
 }
 
-bool xmp_files_get_xmp(XmpFilePtr xf, XmpPtr xmp)
+bool __callconv xmp_files_get_xmp(XmpFilePtr xf, XmpPtr xmp)
 {
     CHECK_PTR(xf, false);
     CHECK_PTR(xmp, false);
@@ -347,7 +350,7 @@ bool xmp_files_get_xmp(XmpFilePtr xf, XmpPtr xmp)
     return result;
 }
 
-bool xmp_files_get_xmp_xmpstring(XmpFilePtr xf, XmpStringPtr xmp_packet,
+bool __callconv xmp_files_get_xmp_xmpstring(XmpFilePtr xf, XmpStringPtr xmp_packet,
                                  XmpPacketInfo* packet_info)
 {
   CHECK_PTR(xf, false);
@@ -378,7 +381,7 @@ bool xmp_files_get_xmp_xmpstring(XmpFilePtr xf, XmpStringPtr xmp_packet,
 }
 
 
-bool xmp_files_can_put_xmp(XmpFilePtr xf, XmpPtr xmp)
+bool __callconv xmp_files_can_put_xmp(XmpFilePtr xf, XmpPtr xmp)
 {
     CHECK_PTR(xf, false);
     RESET_ERROR;
@@ -395,7 +398,7 @@ bool xmp_files_can_put_xmp(XmpFilePtr xf, XmpPtr xmp)
     return result;
 }
 
-bool xmp_files_can_put_xmp_xmpstring(XmpFilePtr xf, XmpStringPtr xmp_packet)
+bool __callconv xmp_files_can_put_xmp_xmpstring(XmpFilePtr xf, XmpStringPtr xmp_packet)
 {
   CHECK_PTR(xf, false);
   RESET_ERROR;
@@ -412,7 +415,7 @@ bool xmp_files_can_put_xmp_xmpstring(XmpFilePtr xf, XmpStringPtr xmp_packet)
   return result;
 }
 
-bool xmp_files_can_put_xmp_cstr(XmpFilePtr xf, const char* xmp_packet, size_t len)
+bool __callconv xmp_files_can_put_xmp_cstr(XmpFilePtr xf, const char* xmp_packet, size_t len)
 {
   CHECK_PTR(xf, false);
   RESET_ERROR;
@@ -429,7 +432,7 @@ bool xmp_files_can_put_xmp_cstr(XmpFilePtr xf, const char* xmp_packet, size_t le
   return result;
 }
 
-bool xmp_files_put_xmp(XmpFilePtr xf, XmpPtr xmp)
+bool __callconv xmp_files_put_xmp(XmpFilePtr xf, XmpPtr xmp)
 {
     CHECK_PTR(xf, false);
     CHECK_PTR(xmp, false);
@@ -446,7 +449,7 @@ bool xmp_files_put_xmp(XmpFilePtr xf, XmpPtr xmp)
     return true;
 }
 
-bool xmp_files_put_xmp_xmpstring(XmpFilePtr xf, XmpStringPtr xmp_packet)
+bool __callconv xmp_files_put_xmp_xmpstring(XmpFilePtr xf, XmpStringPtr xmp_packet)
 {
   CHECK_PTR(xf, false);
   CHECK_PTR(xmp_packet, false);
@@ -463,7 +466,7 @@ bool xmp_files_put_xmp_xmpstring(XmpFilePtr xf, XmpStringPtr xmp_packet)
   return true;
 }
 
-bool xmp_files_put_xmp_cstr(XmpFilePtr xf, const char* xmp_packet, size_t len)
+bool __callconv xmp_files_put_xmp_cstr(XmpFilePtr xf, const char* xmp_packet, size_t len)
 {
   CHECK_PTR(xf, false);
   CHECK_PTR(xmp_packet, false);
@@ -480,7 +483,7 @@ bool xmp_files_put_xmp_cstr(XmpFilePtr xf, const char* xmp_packet, size_t len)
   return true;
 }
 
-bool xmp_files_get_file_info(XmpFilePtr xf, XmpStringPtr filePath,
+bool __callconv xmp_files_get_file_info(XmpFilePtr xf, XmpStringPtr filePath,
                              XmpOpenFileOptions *options,
                              XmpFileType *file_format,
                              XmpFileFormatOptions *handler_flags)
@@ -503,7 +506,7 @@ bool xmp_files_get_file_info(XmpFilePtr xf, XmpStringPtr filePath,
     return result;
 }
 
-bool xmp_files_free(XmpFilePtr xf)
+bool __callconv xmp_files_free(XmpFilePtr xf)
 {
     CHECK_PTR(xf, false);
     RESET_ERROR;
@@ -518,7 +521,7 @@ bool xmp_files_free(XmpFilePtr xf)
     return true;
 }
 
-bool xmp_files_get_format_info(XmpFileType format,
+bool __callconv xmp_files_get_format_info(XmpFileType format,
                                XmpFileFormatOptions *options)
 {
     RESET_ERROR;
@@ -534,7 +537,7 @@ bool xmp_files_get_format_info(XmpFileType format,
     return result;
 }
 
-XmpFileType xmp_files_check_file_format(const char *filePath)
+XmpFileType __callconv xmp_files_check_file_format(const char *filePath)
 {
     CHECK_PTR(filePath, XMP_FT_UNKNOWN);
     RESET_ERROR;
@@ -550,14 +553,14 @@ XmpFileType xmp_files_check_file_format(const char *filePath)
     return file_type;
 }
 
-XmpPtr xmp_new_empty()
+XmpPtr __callconv xmp_new_empty()
 {
     RESET_ERROR;
     SXMPMeta *txmp = new SXMPMeta;
     return (XmpPtr)txmp;
 }
 
-XmpPtr xmp_new(const char *buffer, size_t len)
+XmpPtr __callconv xmp_new(const char *buffer, size_t len)
 {
     CHECK_PTR(buffer, nullptr);
     RESET_ERROR;
@@ -572,7 +575,7 @@ XmpPtr xmp_new(const char *buffer, size_t len)
     return nullptr;
 }
 
-XmpPtr xmp_copy(XmpPtr xmp)
+XmpPtr __callconv xmp_copy(XmpPtr xmp)
 {
     CHECK_PTR(xmp, nullptr);
     RESET_ERROR;
@@ -587,7 +590,7 @@ XmpPtr xmp_copy(XmpPtr xmp)
     return nullptr;
 }
 
-bool xmp_parse(XmpPtr xmp, const char *buffer, size_t len)
+bool __callconv xmp_parse(XmpPtr xmp, const char *buffer, size_t len)
 {
     CHECK_PTR(xmp, false);
     CHECK_PTR(buffer, false);
@@ -603,7 +606,7 @@ bool xmp_parse(XmpPtr xmp, const char *buffer, size_t len)
     return true;
 }
 
-bool xmp_serialize(XmpPtr xmp, XmpStringPtr buffer, uint32_t options,
+bool __callconv xmp_serialize(XmpPtr xmp, XmpStringPtr buffer, uint32_t options,
                    uint32_t padding)
 {
     RESET_ERROR;
@@ -611,7 +614,7 @@ bool xmp_serialize(XmpPtr xmp, XmpStringPtr buffer, uint32_t options,
                                     0);
 }
 
-bool xmp_serialize_and_format(XmpPtr xmp, XmpStringPtr buffer, uint32_t options,
+bool __callconv xmp_serialize_and_format(XmpPtr xmp, XmpStringPtr buffer, uint32_t options,
                               uint32_t padding, const char *newline,
                               const char *tab, int32_t indent)
 {
@@ -631,7 +634,7 @@ bool xmp_serialize_and_format(XmpPtr xmp, XmpStringPtr buffer, uint32_t options,
     return true;
 }
 
-bool xmp_free(XmpPtr xmp)
+bool __callconv xmp_free(XmpPtr xmp)
 {
     CHECK_PTR(xmp, false);
     RESET_ERROR;
@@ -640,7 +643,7 @@ bool xmp_free(XmpPtr xmp)
     return true;
 }
 
-bool xmp_get_property(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_get_property(XmpPtr xmp, const char *schema, const char *name,
                       XmpStringPtr property, uint32_t *propsBits)
 {
     CHECK_PTR(xmp, false);
@@ -661,7 +664,7 @@ bool xmp_get_property(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_get_property_date(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_get_property_date(XmpPtr xmp, const char *schema, const char *name,
                            XmpDateTime *property, uint32_t *propsBits)
 {
     CHECK_PTR(xmp, false);
@@ -685,7 +688,7 @@ bool xmp_get_property_date(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_get_property_float(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_get_property_float(XmpPtr xmp, const char *schema, const char *name,
                             double *property, uint32_t *propsBits)
 {
     CHECK_PTR(xmp, false);
@@ -706,7 +709,7 @@ bool xmp_get_property_float(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_get_property_bool(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_get_property_bool(XmpPtr xmp, const char *schema, const char *name,
                            bool *property, uint32_t *propsBits)
 {
     CHECK_PTR(xmp, false);
@@ -727,7 +730,7 @@ bool xmp_get_property_bool(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_get_property_int32(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_get_property_int32(XmpPtr xmp, const char *schema, const char *name,
                             int32_t *property, uint32_t *propsBits)
 {
     CHECK_PTR(xmp, false);
@@ -750,7 +753,7 @@ bool xmp_get_property_int32(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_get_property_int64(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_get_property_int64(XmpPtr xmp, const char *schema, const char *name,
                             int64_t *property, uint32_t *propsBits)
 {
     CHECK_PTR(xmp, false);
@@ -771,9 +774,9 @@ bool xmp_get_property_int64(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_get_array_item(XmpPtr xmp, const char *schema, const char *name,
-                        int32_t index, XmpStringPtr property,
-                        uint32_t *propsBits)
+bool __callconv xmp_get_array_item(XmpPtr xmp, const char *schema, const char *name,
+								   int32_t index, XmpStringPtr property,
+								   uint32_t *propsBits)
 {
     CHECK_PTR(xmp, false);
     RESET_ERROR;
@@ -794,7 +797,7 @@ bool xmp_get_array_item(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_set_property(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_set_property(XmpPtr xmp, const char *schema, const char *name,
                       const char *value, uint32_t optionBits)
 {
     CHECK_PTR(xmp, false);
@@ -821,7 +824,7 @@ bool xmp_set_property(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_set_property_date(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_set_property_date(XmpPtr xmp, const char *schema, const char *name,
                            const XmpDateTime *value, uint32_t optionBits)
 {
     CHECK_PTR(xmp, false);
@@ -843,7 +846,7 @@ bool xmp_set_property_date(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_set_property_float(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_set_property_float(XmpPtr xmp, const char *schema, const char *name,
                             double value, uint32_t optionBits)
 {
     CHECK_PTR(xmp, false);
@@ -863,7 +866,7 @@ bool xmp_set_property_float(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_set_property_bool(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_set_property_bool(XmpPtr xmp, const char *schema, const char *name,
                            bool value, uint32_t optionBits)
 {
     CHECK_PTR(xmp, false);
@@ -883,7 +886,7 @@ bool xmp_set_property_bool(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_set_property_int32(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_set_property_int32(XmpPtr xmp, const char *schema, const char *name,
                             int32_t value, uint32_t optionBits)
 {
     CHECK_PTR(xmp, false);
@@ -903,7 +906,7 @@ bool xmp_set_property_int32(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_set_property_int64(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_set_property_int64(XmpPtr xmp, const char *schema, const char *name,
                             int64_t value, uint32_t optionBits)
 {
     CHECK_PTR(xmp, false);
@@ -923,7 +926,7 @@ bool xmp_set_property_int64(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_set_array_item(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_set_array_item(XmpPtr xmp, const char *schema, const char *name,
                         int32_t index, const char *value, uint32_t optionBits)
 {
     CHECK_PTR(xmp, false);
@@ -943,7 +946,7 @@ bool xmp_set_array_item(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_append_array_item(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_append_array_item(XmpPtr xmp, const char *schema, const char *name,
                            uint32_t arrayOptions, const char *value,
                            uint32_t optionBits)
 {
@@ -964,7 +967,7 @@ bool xmp_append_array_item(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_delete_property(XmpPtr xmp, const char *schema, const char *name)
+bool __callconv xmp_delete_property(XmpPtr xmp, const char *schema, const char *name)
 {
     CHECK_PTR(xmp, false);
     RESET_ERROR;
@@ -984,7 +987,7 @@ bool xmp_delete_property(XmpPtr xmp, const char *schema, const char *name)
     return ret;
 }
 
-bool xmp_has_property(XmpPtr xmp, const char *schema, const char *name)
+bool __callconv xmp_has_property(XmpPtr xmp, const char *schema, const char *name)
 {
     CHECK_PTR(xmp, false);
     RESET_ERROR;
@@ -1004,7 +1007,7 @@ bool xmp_has_property(XmpPtr xmp, const char *schema, const char *name)
     return ret;
 }
 
-bool xmp_get_localized_text(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_get_localized_text(XmpPtr xmp, const char *schema, const char *name,
                             const char *genericLang, const char *specificLang,
                             XmpStringPtr actualLang, XmpStringPtr itemValue,
                             uint32_t *propsBits)
@@ -1030,7 +1033,7 @@ bool xmp_get_localized_text(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_set_localized_text(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_set_localized_text(XmpPtr xmp, const char *schema, const char *name,
                             const char *genericLang, const char *specificLang,
                             const char *value, uint32_t optionBits)
 {
@@ -1053,7 +1056,7 @@ bool xmp_set_localized_text(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-bool xmp_delete_localized_text(XmpPtr xmp, const char *schema, const char *name,
+bool __callconv xmp_delete_localized_text(XmpPtr xmp, const char *schema, const char *name,
                                const char *genericLang,
                                const char *specificLang)
 {
@@ -1075,30 +1078,30 @@ bool xmp_delete_localized_text(XmpPtr xmp, const char *schema, const char *name,
     return ret;
 }
 
-XmpStringPtr xmp_string_new()
+XmpStringPtr __callconv xmp_string_new()
 {
     return (XmpStringPtr) new std::string;
 }
 
-void xmp_string_free(XmpStringPtr s)
+void __callconv xmp_string_free(XmpStringPtr s)
 {
     auto str = reinterpret_cast<std::string *>(s);
     delete str;
 }
 
-const char *xmp_string_cstr(XmpStringPtr s)
+const char * __callconv xmp_string_cstr(XmpStringPtr s)
 {
     CHECK_PTR(s, nullptr);
     return reinterpret_cast<const std::string *>(s)->c_str();
 }
 
-size_t xmp_string_len(XmpStringPtr s)
+size_t __callconv xmp_string_len(XmpStringPtr s)
 {
     CHECK_PTR(s, 0);
     return reinterpret_cast<const std::string *>(s)->size();
 }
 
-XmpIteratorPtr xmp_iterator_new(XmpPtr xmp, const char *schema,
+XmpIteratorPtr __callconv xmp_iterator_new(XmpPtr xmp, const char *schema,
                                 const char *propName, XmpIterOptions options)
 {
     CHECK_PTR(xmp, nullptr);
@@ -1117,7 +1120,7 @@ XmpIteratorPtr xmp_iterator_new(XmpPtr xmp, const char *schema,
     return nullptr;
 }
 
-bool xmp_iterator_free(XmpIteratorPtr iter)
+bool __callconv xmp_iterator_free(XmpIteratorPtr iter)
 {
     CHECK_PTR(iter, false);
     RESET_ERROR;
@@ -1126,7 +1129,7 @@ bool xmp_iterator_free(XmpIteratorPtr iter)
     return true;
 }
 
-bool xmp_iterator_next(XmpIteratorPtr iter, XmpStringPtr schema,
+bool __callconv xmp_iterator_next(XmpIteratorPtr iter, XmpStringPtr schema,
                        XmpStringPtr propName, XmpStringPtr propValue,
                        uint32_t *options)
 {
@@ -1138,7 +1141,7 @@ bool xmp_iterator_next(XmpIteratorPtr iter, XmpStringPtr schema,
                        reinterpret_cast<std::string *>(propValue), options);
 }
 
-bool xmp_iterator_skip(XmpIteratorPtr iter, XmpIterSkipOptions options)
+bool __callconv xmp_iterator_skip(XmpIteratorPtr iter, XmpIterSkipOptions options)
 {
     CHECK_PTR(iter, false);
     RESET_ERROR;
@@ -1147,23 +1150,324 @@ bool xmp_iterator_skip(XmpIteratorPtr iter, XmpIterSkipOptions options)
     return true;
 }
 
-int xmp_datetime_compare(XmpDateTime *left, XmpDateTime *right)
+static void
+VerifyDateTimeFlags(XMP_DateTime * dt)
 {
-    if (!left && !right) {
-        return 0;
-    }
-    if (!left) {
-        return -1;
-    }
-    if (!right) {
-        return 1;
-    }
-    XMP_DateTime _left;
-    ASSIGN(_left, *left);
-    XMP_DateTime _right;
-    ASSIGN(_right, *right);
-    return XMPUtils::CompareDateTime(_left, _right);
+
+	if ((dt->year != 0) || (dt->month != 0) || (dt->day != 0)) dt->hasDate = true;
+	if ((dt->hour != 0) || (dt->minute != 0) || (dt->second != 0) || (dt->nanoSecond != 0)) dt->hasTime = true;
+	if ((dt->tzSign != 0) || (dt->tzHour != 0) || (dt->tzMinute != 0)) dt->hasTimeZone = true;
+	if (dt->hasTimeZone) dt->hasTime = true;	// ! Don't combine with above line, UTC has zero values.
+
 }
+
+static bool
+IsLeapYear(long year)
+{
+
+	if (year < 0) year = -year + 1;		// Fold the negative years, assuming there is a year 0.
+
+	if ((year % 4) != 0) return false;	// Not a multiple of 4.
+	if ((year % 100) != 0) return true;	// A multiple of 4 but not a multiple of 100.
+	if ((year % 400) == 0) return true;	// A multiple of 400.
+
+	return false;							// A multiple of 100 but not a multiple of 400.
+
+}
+
+static int
+DaysInMonth(XMP_Int32 year, XMP_Int32 month)
+{
+
+	static short	daysInMonth[13] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	// Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+
+	int days = daysInMonth[month];
+	if ((month == 2) && IsLeapYear(year)) days += 1;
+
+	return days;
+
+}
+
+static void
+AdjustTimeOverflow(XMP_DateTime * time)
+{
+	enum { kBillion = 1000 * 1000 * 1000L };
+
+	// ----------------------------------------------------------------------------------------------
+	// To be safe against pathalogical overflow we first adjust from month to second, then from
+	// nanosecond back up to month. This leaves each value closer to zero before propagating into it.
+	// For example if the hour and minute are both near max, adjusting minutes first can cause the
+	// hour to overflow.
+
+	// ! Photoshop 8 creates "time only" values with zeros for year, month, and day.
+
+	if ((time->year != 0) || (time->month != 0) || (time->day != 0)) {
+
+		while (time->month < 1) {
+			time->year -= 1;
+			time->month += 12;
+		}
+
+		while (time->month > 12) {
+			time->year += 1;
+			time->month -= 12;
+		}
+
+		while (time->day < 1) {
+			time->month -= 1;
+			if (time->month < 1) {	// ! Keep the months in range for indexing daysInMonth!
+				time->year -= 1;
+				time->month += 12;
+			}
+			time->day += DaysInMonth(time->year, time->month);	// ! Decrement month before so index here is right!
+		}
+
+		while (time->day > DaysInMonth(time->year, time->month)) {
+			time->day -= DaysInMonth(time->year, time->month);	// ! Increment month after so index here is right!
+			time->month += 1;
+			if (time->month > 12) {
+				time->year += 1;
+				time->month -= 12;
+			}
+		}
+
+	}
+
+	while (time->hour < 0) {
+		time->day -= 1;
+		time->hour += 24;
+	}
+
+	while (time->hour >= 24) {
+		time->day += 1;
+		time->hour -= 24;
+	}
+
+	while (time->minute < 0) {
+		time->hour -= 1;
+		time->minute += 60;
+	}
+
+	while (time->minute >= 60) {
+		time->hour += 1;
+		time->minute -= 60;
+	}
+
+	while (time->second < 0) {
+		time->minute -= 1;
+		time->second += 60;
+	}
+
+	while (time->second >= 60) {
+		time->minute += 1;
+		time->second -= 60;
+	}
+
+	while (time->nanoSecond < 0) {
+		time->second -= 1;
+		time->nanoSecond += kBillion;
+	}
+
+	while (time->nanoSecond >= kBillion) {
+		time->second += 1;
+		time->nanoSecond -= kBillion;
+	}
+
+	while (time->second < 0) {
+		time->minute -= 1;
+		time->second += 60;
+	}
+
+	while (time->second >= 60) {
+		time->minute += 1;
+		time->second -= 60;
+	}
+
+	while (time->minute < 0) {
+		time->hour -= 1;
+		time->minute += 60;
+	}
+
+	while (time->minute >= 60) {
+		time->hour += 1;
+		time->minute -= 60;
+	}
+
+	while (time->hour < 0) {
+		time->day -= 1;
+		time->hour += 24;
+	}
+
+	while (time->hour >= 24) {
+		time->day += 1;
+		time->hour -= 24;
+	}
+
+	if ((time->year != 0) || (time->month != 0) || (time->day != 0)) {
+
+		while (time->month < 1) { // Make sure the months are OK first, for DaysInMonth.
+			time->year -= 1;
+			time->month += 12;
+		}
+
+		while (time->month > 12) {
+			time->year += 1;
+			time->month -= 12;
+		}
+
+		while (time->day < 1) {
+			time->month -= 1;
+			if (time->month < 1) {
+				time->year -= 1;
+				time->month += 12;
+			}
+			time->day += DaysInMonth(time->year, time->month);
+		}
+
+		while (time->day > DaysInMonth(time->year, time->month)) {
+			time->day -= DaysInMonth(time->year, time->month);
+			time->month += 1;
+			if (time->month > 12) {
+				time->year += 1;
+				time->month -= 12;
+			}
+		}
+
+	}
+
+}
+
+void ConvertToUTCTime(XMP_DateTime * time)
+{
+	XMP_Assert(time != 0);	// ! Enforced by wrapper.
+
+	VerifyDateTimeFlags(time);
+
+	if (!time->hasTimeZone) return;	// Do nothing if there is no current time zone.
+
+	XMP_Assert((0 <= time->tzHour) && (time->tzHour <= 23));
+	XMP_Assert((0 <= time->tzMinute) && (time->tzMinute <= 59));
+	XMP_Assert((-1 <= time->tzSign) && (time->tzSign <= +1));
+	XMP_Assert((time->tzSign == 0) ? ((time->tzHour == 0) && (time->tzMinute == 0)) :
+		((time->tzHour != 0) || (time->tzMinute != 0)));
+
+	if (time->tzSign == kXMP_TimeEastOfUTC) {
+		// We are before (east of) GMT, subtract the offset from the time.
+		time->hour -= time->tzHour;
+		time->minute -= time->tzMinute;
+	}
+	else if (time->tzSign == kXMP_TimeWestOfUTC) {
+		// We are behind (west of) GMT, add the offset to the time.
+		time->hour += time->tzHour;
+		time->minute += time->tzMinute;
+	}
+
+	AdjustTimeOverflow(time);
+	time->tzSign = time->tzHour = time->tzMinute = 0;
+
+}
+
+int CompareDateTime(const XMP_DateTime & _in_left,
+					const XMP_DateTime & _in_right)
+{
+	int result = 0;
+
+	XMP_DateTime left = _in_left;
+	XMP_DateTime right = _in_right;
+
+	VerifyDateTimeFlags(&left);
+	VerifyDateTimeFlags(&right);
+
+	// Can't compare if one has a date and the other does not.
+	if (left.hasDate != right.hasDate) return 0;	// Throw?
+
+	if (left.hasTimeZone & right.hasTimeZone) {
+		// If both times have zones then convert them to UTC, otherwise assume the same zone.
+		ConvertToUTCTime(&left);
+		ConvertToUTCTime(&right);
+	}
+
+	if (left.hasDate) {
+
+		XMP_Assert(right.hasDate);
+
+		if (left.year < right.year) {
+			result = -1;
+		}
+		else if (left.year > right.year) {
+			result = +1;
+		}
+		else if (left.month < right.month) {
+			result = -1;
+		}
+		else if (left.month > right.month) {
+			result = +1;
+		}
+		else if (left.day < right.day) {
+			result = -1;
+		}
+		else if (left.day > right.day) {
+			result = +1;
+		}
+
+		if (result != 0) return result;
+
+	}
+
+	if (left.hasTime & right.hasTime) {
+
+		// Ignore the time parts if either value is date-only.
+
+		if (left.hour < right.hour) {
+			result = -1;
+		}
+		else if (left.hour > right.hour) {
+			result = +1;
+		}
+		else if (left.minute < right.minute) {
+			result = -1;
+		}
+		else if (left.minute > right.minute) {
+			result = +1;
+		}
+		else if (left.second < right.second) {
+			result = -1;
+		}
+		else if (left.second > right.second) {
+			result = +1;
+		}
+		else if (left.nanoSecond < right.nanoSecond) {
+			result = -1;
+		}
+		else if (left.nanoSecond > right.nanoSecond) {
+			result = +1;
+		}
+		else {
+			result = 0;
+		}
+	}
+	return result;
+}
+
+int __callconv xmp_datetime_compare(XmpDateTime *left, XmpDateTime *right)
+{
+	if (!left && !right) {
+		return 0;
+	}
+	if (!left) {
+		return -1;
+	}
+	if (!right) {
+		return 1;
+	}
+	XMP_DateTime _left;
+	ASSIGN(_left, *left);
+	XMP_DateTime _right;
+	ASSIGN(_right, *right);
+	return CompareDateTime(_left, _right);
+}
+
 
 #ifdef __cplusplus
 }

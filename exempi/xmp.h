@@ -51,6 +51,9 @@
 extern "C" {
 #endif
 
+#define DllExport __declspec( dllexport )
+#define __callconv __stdcall
+
 /* enums grafted from XMP_Const.h */
 
 /** Option bits for xmp_files_open() */
@@ -363,19 +366,19 @@ enum {
 };
 
 /** Init the library. Must be called before anything else */
-bool xmp_init(void);
-void xmp_terminate(void);
+DllExport bool __callconv xmp_init(void);
+DllExport void __callconv xmp_terminate(void);
 
 /** get the error code that last occurred.
  * @todo make this thread-safe. Getting the error code
  * from another thread than the on it occurred in is undefined.
  */
-int xmp_get_error(void);
+DllExport int __callconv xmp_get_error(void);
 
-XmpFilePtr xmp_files_new(void);
-XmpFilePtr xmp_files_open_new(const char *, XmpOpenFileOptions options);
+DllExport XmpFilePtr __callconv xmp_files_new(void);
+DllExport XmpFilePtr __callconv xmp_files_open_new(const char *, XmpOpenFileOptions options);
 
-bool xmp_files_open(XmpFilePtr xf, const char *, XmpOpenFileOptions options);
+DllExport bool __callconv xmp_files_open(XmpFilePtr xf, const char *, XmpOpenFileOptions options);
 
 /** Close an XMP file. Will flush the changes
  * @param xf the file object
@@ -383,30 +386,30 @@ bool xmp_files_open(XmpFilePtr xf, const char *, XmpOpenFileOptions options);
  * @return true on succes, false on error
  * xmp_get_error() will give the error code.
  */
-bool xmp_files_close(XmpFilePtr xf, XmpCloseFileOptions options);
+DllExport bool __callconv xmp_files_close(XmpFilePtr xf, XmpCloseFileOptions options);
 
 /** Get the XMP packet from the file
  * @param xf the %XmpFilePtr to get the XMP packet from
  * @return a newly allocated XmpPtr. Use %xmp_free to release it.
  */
-XmpPtr xmp_files_get_new_xmp(XmpFilePtr xf);
+DllExport XmpPtr __callconv xmp_files_get_new_xmp(XmpFilePtr xf);
 
 /** File the XMP packet from the file
  * @param xf the %XmpFilePtr to get the XMP packet from
  * @param xmp the XMP Packet to fill. Must be valid.
  */
-bool xmp_files_get_xmp(XmpFilePtr xf, XmpPtr xmp);
-bool xmp_files_get_xmp_xmpstring(XmpFilePtr xf, XmpStringPtr xmp_packet,
-                                 XmpPacketInfo* packet_info);
+DllExport bool __callconv xmp_files_get_xmp(XmpFilePtr xf, XmpPtr xmp);
+DllExport bool __callconv xmp_files_get_xmp_xmpstring(XmpFilePtr xf, XmpStringPtr xmp_packet,
+										           XmpPacketInfo* packet_info);
 
-bool xmp_files_can_put_xmp(XmpFilePtr xf, XmpPtr xmp);
-bool xmp_files_can_put_xmp_xmpstring(XmpFilePtr xf, XmpStringPtr xmp_packet);
-bool xmp_files_can_put_xmp_cstr(XmpFilePtr xf, const char* xmp_packet,
+DllExport bool __callconv xmp_files_can_put_xmp(XmpFilePtr xf, XmpPtr xmp);
+DllExport bool __callconv xmp_files_can_put_xmp_xmpstring(XmpFilePtr xf, XmpStringPtr xmp_packet);
+DllExport bool __callconv xmp_files_can_put_xmp_cstr(XmpFilePtr xf, const char* xmp_packet,
                                 size_t len);
 
-bool xmp_files_put_xmp(XmpFilePtr xf, XmpPtr xmp);
-bool xmp_files_put_xmp_xmpstring(XmpFilePtr xf, XmpStringPtr xmp_packet);
-bool xmp_files_put_xmp_cstr(XmpFilePtr xf, const char* xmp_packet, size_t len);
+DllExport bool __callconv xmp_files_put_xmp(XmpFilePtr xf, XmpPtr xmp);
+DllExport bool __callconv xmp_files_put_xmp_xmpstring(XmpFilePtr xf, XmpStringPtr xmp_packet);
+DllExport bool __callconv xmp_files_put_xmp_cstr(XmpFilePtr xf, const char* xmp_packet, size_t len);
 
 /** Get the file info from the open file
  * @param xf the file object
@@ -418,31 +421,31 @@ bool xmp_files_put_xmp_cstr(XmpFilePtr xf, const char* xmp_packet, size_t len);
  * %xmp_files_get_format_info.
  * @return false in case of error.
  */
-bool xmp_files_get_file_info(XmpFilePtr xf, XmpStringPtr filePath,
-                             XmpOpenFileOptions *options,
-                             XmpFileType *file_format,
-                             XmpFileFormatOptions *handler_flags);
+DllExport bool __callconv xmp_files_get_file_info(XmpFilePtr xf, XmpStringPtr filePath,
+											   XmpOpenFileOptions *options,
+											   XmpFileType *file_format,
+											   XmpFileFormatOptions *handler_flags);
 
 /** Free a XmpFilePtr
  * @param xf the file ptr. Cannot be NULL
  * @return false on error.
  * Calll %xmp_get_error to retrieve the error code.
  */
-bool xmp_files_free(XmpFilePtr xf);
+DllExport bool __callconv xmp_files_free(XmpFilePtr xf);
 
 /** Get the format info
  * @param format type identifier
  * @param options the options for the file format handler
  * @return false on error
  */
-bool xmp_files_get_format_info(XmpFileType format,
+DllExport bool __callconv xmp_files_get_format_info(XmpFileType format,
                                XmpFileFormatOptions *options);
 
 /** Check the file format of a file. Use the same logic as in xmp_files_open()
  * @param filePath the path to the file
  * @return XMP_FT_UNKNOWN on error or if the file type is unknown
  */
-XmpFileType xmp_files_check_file_format(const char *filePath);
+DllExport XmpFileType __callconv xmp_files_check_file_format(const char *filePath);
 
 /** Register a new namespace to add properties to
  *  This is done automatically when reading the metadata block
@@ -452,9 +455,9 @@ XmpFileType xmp_files_check_file_format(const char *filePath);
  *  %suggestedPrefix.
  *  @return true if success, false otherwise.
  */
-bool xmp_register_namespace(const char *namespaceURI,
-                            const char *suggestedPrefix,
-                            XmpStringPtr registeredPrefix);
+DllExport bool __callconv xmp_register_namespace(const char *namespaceURI,
+										      const char *suggestedPrefix,
+											  XmpStringPtr registeredPrefix);
 
 /** Check is a namespace is registered
  *  @param ns the namespace to check.
@@ -463,7 +466,7 @@ bool xmp_register_namespace(const char *namespaceURI,
  *  @return true if registered.
  *  NEW in 2.1
  */
-bool xmp_namespace_prefix(const char *ns, XmpStringPtr prefix);
+DllExport bool __callconv xmp_namespace_prefix(const char *ns, XmpStringPtr prefix);
 
 /** Check if a ns prefix is registered.
  *  @param prefix the prefix to check.
@@ -472,37 +475,37 @@ bool xmp_namespace_prefix(const char *ns, XmpStringPtr prefix);
  *  @return true if registered.
  *  NEW in 2.1
  */
-bool xmp_prefix_namespace_uri(const char *prefix, XmpStringPtr ns);
+DllExport bool __callconv xmp_prefix_namespace_uri(const char *prefix, XmpStringPtr ns);
 
 /** Create a new empty XMP packet
  * @return the packet pointer. Must be free with xmp_free()
  */
-XmpPtr xmp_new_empty(void);
+DllExport XmpPtr __callconv xmp_new_empty(void);
 
 /** Create a new XMP packet
  * @param buffer the buffer to load data from. UTF-8 encoded.
  * @param len the buffer length in byte
  * @return the packet pointer. Must be free with xmp_free()
  */
-XmpPtr xmp_new(const char *buffer, size_t len);
+DllExport XmpPtr __callconv xmp_new(const char *buffer, size_t len);
 
 /** Create a new XMP packet from the one passed.
  * @param xmp the instance to copy. Can be NULL.
  * @return the packet pointer. NULL is failer (or NULL is passed).
  */
-XmpPtr xmp_copy(XmpPtr xmp);
+DllExport XmpPtr __callconv xmp_copy(XmpPtr xmp);
 
 /** Free the xmp packet
  * @param xmp the xmp packet to free
  */
-bool xmp_free(XmpPtr xmp);
+DllExport bool __callconv xmp_free(XmpPtr xmp);
 
 /** Parse the XML passed through the buffer and load it.
  * @param xmp the XMP packet.
  * @param buffer the buffer.
  * @param len the length of the buffer.
  */
-bool xmp_parse(XmpPtr xmp, const char *buffer, size_t len);
+DllExport bool __callconv xmp_parse(XmpPtr xmp, const char *buffer, size_t len);
 
 /** Serialize the XMP Packet to the given buffer
  * @param xmp the XMP Packet
@@ -512,8 +515,8 @@ bool xmp_parse(XmpPtr xmp, const char *buffer, size_t len);
  *                embedded XMP in place.
  * @return TRUE if success.
  */
-bool xmp_serialize(XmpPtr xmp, XmpStringPtr buffer, uint32_t options,
-                   uint32_t padding);
+DllExport bool __callconv xmp_serialize(XmpPtr xmp, XmpStringPtr buffer, uint32_t options,
+									 uint32_t padding);
 
 /** Serialize the XMP Packet to the given buffer with formatting
  * @param xmp the XMP Packet
@@ -526,7 +529,7 @@ bool xmp_serialize(XmpPtr xmp, XmpStringPtr buffer, uint32_t options,
  * @param indent the initial indentation level
  * @return TRUE if success.
  */
-bool xmp_serialize_and_format(XmpPtr xmp, XmpStringPtr buffer, uint32_t options,
+DllExport bool __callconv xmp_serialize_and_format(XmpPtr xmp, XmpStringPtr buffer, uint32_t options,
                               uint32_t padding, const char *newline,
                               const char *tab, int32_t indent);
 
@@ -538,18 +541,18 @@ bool xmp_serialize_and_format(XmpPtr xmp, XmpStringPtr buffer, uint32_t options,
  * @param propsBits pointer to the option bits. Pass NULL if not needed
  * @return true if found
  */
-bool xmp_get_property(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_get_property(XmpPtr xmp, const char *schema, const char *name,
                       XmpStringPtr property, uint32_t *propsBits);
 
-bool xmp_get_property_date(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_get_property_date(XmpPtr xmp, const char *schema, const char *name,
                            XmpDateTime *property, uint32_t *propsBits);
-bool xmp_get_property_float(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_get_property_float(XmpPtr xmp, const char *schema, const char *name,
                             double *property, uint32_t *propsBits);
-bool xmp_get_property_bool(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_get_property_bool(XmpPtr xmp, const char *schema, const char *name,
                            bool *property, uint32_t *propsBits);
-bool xmp_get_property_int32(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_get_property_int32(XmpPtr xmp, const char *schema, const char *name,
                             int32_t *property, uint32_t *propsBits);
-bool xmp_get_property_int64(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_get_property_int64(XmpPtr xmp, const char *schema, const char *name,
                             int64_t *property, uint32_t *propsBits);
 
 /** Get an item frpm an array property
@@ -561,7 +564,7 @@ bool xmp_get_property_int64(XmpPtr xmp, const char *schema, const char *name,
  * @param propsBits the property bits. Pass NULL is unwanted.
  * @return TRUE if success.
  */
-bool xmp_get_array_item(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_get_array_item(XmpPtr xmp, const char *schema, const char *name,
                         int32_t index, XmpStringPtr property,
                         uint32_t *propsBits);
 
@@ -573,7 +576,7 @@ bool xmp_get_array_item(XmpPtr xmp, const char *schema, const char *name,
  * @param optionBits
  * @return false if failure
  */
-bool xmp_set_property(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_set_property(XmpPtr xmp, const char *schema, const char *name,
                       const char *value, uint32_t optionBits);
 
 /** Set a date XMP property in the XMP packet
@@ -584,7 +587,7 @@ bool xmp_set_property(XmpPtr xmp, const char *schema, const char *name,
  * @param optionBits
  * @return false if failure
  */
-bool xmp_set_property_date(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_set_property_date(XmpPtr xmp, const char *schema, const char *name,
                            const XmpDateTime *value, uint32_t optionBits);
 
 /** Set a float XMP property in the XMP packet
@@ -595,16 +598,16 @@ bool xmp_set_property_date(XmpPtr xmp, const char *schema, const char *name,
  * @param optionBits
  * @return false if failure
  */
-bool xmp_set_property_float(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_set_property_float(XmpPtr xmp, const char *schema, const char *name,
                             double value, uint32_t optionBits);
-bool xmp_set_property_bool(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_set_property_bool(XmpPtr xmp, const char *schema, const char *name,
                            bool value, uint32_t optionBits);
-bool xmp_set_property_int32(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_set_property_int32(XmpPtr xmp, const char *schema, const char *name,
                             int32_t value, uint32_t optionBits);
-bool xmp_set_property_int64(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_set_property_int64(XmpPtr xmp, const char *schema, const char *name,
                             int64_t value, uint32_t optionBits);
 
-bool xmp_set_array_item(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_set_array_item(XmpPtr xmp, const char *schema, const char *name,
                         int32_t index, const char *value, uint32_t optionBits);
 
 /** Append a value to the XMP Property array in the XMP Packet provided
@@ -615,7 +618,7 @@ bool xmp_set_array_item(XmpPtr xmp, const char *schema, const char *name,
  * @param value null-terminated string
  * @param optionBits option bits of the value itself.
  */
-bool xmp_append_array_item(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_append_array_item(XmpPtr xmp, const char *schema, const char *name,
                            uint32_t arrayOptions, const char *value,
                            uint32_t optionBits);
 
@@ -624,7 +627,7 @@ bool xmp_append_array_item(XmpPtr xmp, const char *schema, const char *name,
  * @param schema the schema of the property
  * @param name the name of the property
  */
-bool xmp_delete_property(XmpPtr xmp, const char *schema, const char *name);
+DllExport bool __callconv xmp_delete_property(XmpPtr xmp, const char *schema, const char *name);
 
 /** Determines if a property exists in the XMP Packet provided
  * @param xmp the XMP packet
@@ -632,7 +635,7 @@ bool xmp_delete_property(XmpPtr xmp, const char *schema, const char *name);
  * @param name the name of the property. Can't be NULL or empty.
  * @return true is the property exists
  */
-bool xmp_has_property(XmpPtr xmp, const char *schema, const char *name);
+DllExport bool __callconv xmp_has_property(XmpPtr xmp, const char *schema, const char *name);
 
 /** Get a localised text from a localisable property.
  * @param xmp the XMP packet
@@ -647,7 +650,7 @@ bool xmp_has_property(XmpPtr xmp, const char *schema, const char *name);
  * @param propBits the options flags describing the property. Can be NULL.
  * @return true if found, false otherwise.
  */
-bool xmp_get_localized_text(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_get_localized_text(XmpPtr xmp, const char *schema, const char *name,
                             const char *genericLang, const char *specificLang,
                             XmpStringPtr actualLang, XmpStringPtr itemValue,
                             uint32_t *propBits);
@@ -663,11 +666,11 @@ bool xmp_get_localized_text(XmpPtr xmp, const char *schema, const char *name,
  * @param optionBits the options flags describing the property.
  * @return true if set, false otherwise.
  */
-bool xmp_set_localized_text(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_set_localized_text(XmpPtr xmp, const char *schema, const char *name,
                             const char *genericLang, const char *specificLang,
                             const char *value, uint32_t optionBits);
 
-bool xmp_delete_localized_text(XmpPtr xmp, const char *schema, const char *name,
+DllExport bool __callconv xmp_delete_localized_text(XmpPtr xmp, const char *schema, const char *name,
                                const char *genericLang,
                                const char *specificLang);
 
@@ -675,25 +678,25 @@ bool xmp_delete_localized_text(XmpPtr xmp, const char *schema, const char *name,
  * @return the new instance. Must be freed with
  * xmp_string_free()
  */
-XmpStringPtr xmp_string_new(void);
+DllExport XmpStringPtr __callconv xmp_string_new(void);
 
 /** Free a XmpStringPtr
  * @param s the string to free
  */
-void xmp_string_free(XmpStringPtr s);
+DllExport void __callconv xmp_string_free(XmpStringPtr s);
 
 /** Get the C string from the XmpStringPtr
  * @param s the string object
  * @return the const char * for the XmpStringPtr. It
  * belong to the object.
  */
-const char * xmp_string_cstr(XmpStringPtr s);
+DllExport const char * __callconv xmp_string_cstr(XmpStringPtr s);
 
 /** Get the string length from the XmpStringPtr
  * @param s the string object
  * @return the string length. The unerlying implementation has it.
  */
-size_t xmp_string_len(XmpStringPtr s);
+DllExport size_t __callconv xmp_string_len(XmpStringPtr s);
 
 /** Create a new iterator.
  * @param xmp the packet
@@ -702,13 +705,13 @@ size_t xmp_string_len(XmpStringPtr s);
  * @param options
  * @return an iterator must be freed with % xmp_iterator_free
  */
-XmpIteratorPtr xmp_iterator_new(XmpPtr xmp, const char *schema,
+DllExport XmpIteratorPtr __callconv xmp_iterator_new(XmpPtr xmp, const char *schema,
                                 const char *propName, XmpIterOptions options);
 
 /** Free an iterator.
  * @param iter the iterator to free.
  */
-bool xmp_iterator_free(XmpIteratorPtr iter);
+DllExport bool __callconv xmp_iterator_free(XmpIteratorPtr iter);
 
 /** Iterate to the next value
  * @param iter the iterator
@@ -718,13 +721,13 @@ bool xmp_iterator_free(XmpIteratorPtr iter);
  * @param options the options for the property. Pass NULL if not wanted.
  * @return true if still something, false if none
  */
-bool xmp_iterator_next(XmpIteratorPtr iter, XmpStringPtr schema,
+DllExport bool __callconv xmp_iterator_next(XmpIteratorPtr iter, XmpStringPtr schema,
                        XmpStringPtr propName, XmpStringPtr propValue,
                        uint32_t *options);
 
 /**
  */
-bool xmp_iterator_skip(XmpIteratorPtr iter, XmpIterSkipOptions options);
+DllExport bool __callconv xmp_iterator_skip(XmpIteratorPtr iter, XmpIterSkipOptions options);
 
 /** Compare two XmpDateTime
  * @param left value
@@ -732,7 +735,7 @@ bool xmp_iterator_skip(XmpIteratorPtr iter, XmpIterSkipOptions options);
  * @return if left < right, return < 0. If left > right, return > 0.
  * if left == right, return 0.
  */
-int xmp_datetime_compare(XmpDateTime *left, XmpDateTime *right);
+DllExport int __callconv xmp_datetime_compare(XmpDateTime *left, XmpDateTime *right);
 
 #ifdef __cplusplus
 }

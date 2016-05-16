@@ -24,6 +24,8 @@
 
 #include "third-party/zuid/interfaces/MD5.h"
 
+#include <algorithm>
+
 using namespace std;
 
 // =================================================================================================

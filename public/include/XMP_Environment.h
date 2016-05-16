@@ -29,6 +29,8 @@
 // ! Tempting though it might be to have a standard macro for big or little endian, there seems to
 // ! be no decent way to do that on our own in UNIX. Forcing it on the client isn't acceptable.
 
+#define WIN_ENV 1
+
 #if defined ( MAC_ENV )
 
 	#if 0	// ! maybe someday - ! MAC_ENV

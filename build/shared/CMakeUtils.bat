@@ -22,7 +22,7 @@ set CleanCMake=OFF
 set XMPROOT=%buildSharedLoc%/../..
 
 :: Default Generator
-set GeneratorVersion=Visual Studio 11
+set GeneratorVersion=Visual Studio 12
 set GeneratorArchitecture=Win64
 set CMake_Arch64Bit=ON
 set CMake_ARCH=x64
@@ -59,9 +59,9 @@ set CMake_LibTypeFolderName=dynamic
 	)
 
 	:: Visual Studio Version
-	if /I "%1"=="2011" (
+	if /I "%1"=="2013" (
 	echo "Generator VS 2011 specified"
-	set GeneratorVersion=Visual Studio 11
+	set GeneratorVersion=Visual Studio 12
 	set CMakeGenVersion_FolderSuffix=
 	)
 
